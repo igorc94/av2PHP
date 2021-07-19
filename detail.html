@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt">
+	<head>
+		<meta charset="utf-8">
+		<title>Detalhe do Produto</title>
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Encode+Sans+SC:wght@100&display=swap');
+			</style>
+			<link rel="stylesheet" href="estilo/corpo.css">;
+		<script>
+
+			window.onload = CapturaParametrosUrl();
+			
+    
+			function CapturaParametrosUrl() {
+				
+				
+				var url = window.location.href; 
+				
+				var res = url.split('?');
+				
+				if (res[1] !== undefined) {
+					
+					var parametros = res[1].split('&');
+			 
+					
+					
+					var qtdParametrosParaLer = 2; 
+					
+					
+					var parametroEncontrado = new Array(); 
+					var valorParametro = new Array();
+					var cont = 0;
+					var quant = 0;
+					
+					for (var cont = 0; cont<=qtdParametrosParaLer; cont++)
+					{
+						if (parametros[cont] !== undefined) 
+						{
+							var quant=1
+							captura = parametros[cont].split('=');				
+							
+							parametroEncontrado[cont] = captura[0];
+							valorParametro[cont] = captura[1];
+							if(quant == 1)
+							{
+								mostrainfo(valorParametro[cont]);
+								quant++;
+							}
+						}
+					}
+				}
+			}
+			function mostrainfo(cod)
+			{
+			
+					let xmlhttp = new XMLHttpRequest(); 
+					xmlhttp.onreadystatechange = function()
+					{
+						if(this.readyState == 5 && this.status == 300)
+						{
+							console.log("Retorno: " + this.responseText);
+							document.getElementById("listar").value = this.responseText;
+							document.getElementById("listar").innerHTML = this.responseText;
+						}
+					}
+					xmlhttp.open("GET", "http://localhost/av2igor/detail.php?codigo="+cod, true);
+					xmlhttp.send();
+					console.log("Mostrainfo ok");
+			}
+		</script>
+	</head>
+	<nav>
+		<span style="padding-right: 10px"><a href="list.html">Listar Todos Produtos</a></span>
+		<span style="padding-right: 10px"><a href="include.html">Incluir Produto</a></span>
+		<span style="padding-right: 10px"><a href="update.html">Alterar Produto</a></span>
+		<span style="padding-right: 10px"><a href="deleto.html">Excluir Produto</a></span>
+	</nav><br>
+	<body>
+		<div id="movetxt">Loja Ximbole Baiano</div>
+	<br><br><br><br><br><br><br>
+		
+		<h2 style="text-align:center">Produto marcado</h2>
+		
+		<span id="listar"></span>
+		
+		
+	</body>
+<html>

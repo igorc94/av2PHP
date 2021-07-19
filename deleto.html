@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt">
+	<head>
+		<meta charset="utf-8">
+		<title>CRUD PHP</title>
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Encode+Sans+SC:wght@100&display=swap');
+			</style>
+			<link rel="stylesheet" href="estilo/corpo.css">;
+		<script>
+			function mostrainfo()//string cod
+			{
+					let xmlhttp = new XMLHttpRequest(); //inicia o objeto
+					let cod = document.getElementById("codigo").value;
+					xmlhttp.onreadystatechange = function()//roda a funcao
+					{
+						if(this.readyState == 4 && this.status == 200)
+						{
+							console.log("retorno: " +  this.responseText);
+							document.getElementById("resposta").value = this.responseText;
+							document.getElementById("resposta").innerHTML = this.responseText;
+						}
+					}
+					xmlhttp.open("GET", "https://localhost/av2igor/deleto.php?codigo=" + cod,true);
+					xmlhttp.send();
+					console.log("Requisicao enviada");
+			}
+			function confirma(resposta){
+				console.log("Resposta: " + resposta);
+				if(resposta == "SIM")
+				{
+					EnviarForm();
+				}
+				else{
+					document.getElementById("msgErro").innerText = " OBRIGADO!! ";
+				}
+			}
+			function ValidaForm() 
+			{
+				mostrainfo();
+				let cod = document.getElementById("codigo").value;
+				let erro = 1;
+				
+				erro = ValidaCod(cod);
+				if (erro == 1 ) {
+					document.getElementById("msgErro").innerText = "Que codigo é esse";
+				} 
+				else {
+					document.getElementById("resp").innerHTML = '<br><br>Confirmar?<input type="button" value="SIM" onclick="confirma(this.value)"></input><input type="button" value="NAO" onclick="confirma(this.value)"></input>';
+				}
+			}
+			function ValidaCod(pCod) {
+				var err=1;
+				if (pCod == "") {
+				  return err;
+				}
+				else{
+					err=0;
+					return err;
+				}
+			}
+			function EnviarForm() {
+				let xmlHttp = new XMLHttpRequest();
+				let cod = document.getElementById("codigo").value;
+				
+				xmlHttp.onreadystatechange = function() {
+				  if (this.readyState == 4 && this.status == 200) {
+					console.log("Retornou: " + this.responseText);
+					document.getElementById("msgErro").value = this.responseText;
+				  }
+				}
+				xmlHttp.open("GET", "https://localhost/av2igor/deleto.php?codigo=" + cod, true);
+				xmlHttp.send();
+				console.log("Requisição enviada.");
+			}
+		</script>
+	</head>
+	<nav>
+		<span style="padding-right: 10px"><a href="list.html">Listar Todos Produtos</a></span>
+		<span style="padding-right: 10px"><a href="include.html">Incluir Produto</a></span>
+		<span style="padding-right: 10px"><a href="update.html">Alterar Produto</a></span>
+		<span style="padding-right: 10px"><a href="deleto.html">Excluir Produto</a></span>
+	</nav><br>
+	<body>
+		<div id="movetxt">Loja Ximbole Baiano</div>
+	<br><br><br><br><br><br><br>
+		<form>
+			<h2>Excluir Produto</h2>
+			CODIGO DE BARRA: <input type="text" id="codigo"><br><br>
+			<input type="button" value="Deletar Produto" onclick="ValidaForm()">	
+		</form>
+		<br><span id="resposta"></span> 
+		<span id="resp"></span>
+		<br><br><p id="msgErro"></p><br>
+	</body>
+<html>
